@@ -1,5 +1,4 @@
 <?php
-// app/Models/Etudiant.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,9 +8,16 @@ class Etudiant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['Groupe', 'CEF', 'Nom', 'Prenom', 'date_absence', 'absence'];
+    protected $fillable = [
+        'Groupe', 'CEF', 'Nom', 'Prenom',
+    ];
+
+    public function absences()
+    {
+        return $this->hasMany(Absence::class);
+    }
     public static function getGroupes()
     {
-        return self::select('Groupe')->distinct()->pluck('Groupe');
+        return self::distinct()->pluck('Groupe');
     }
 }

@@ -23,9 +23,6 @@ class EtudiantExportImport extends Controller
         'excel_file' => 'required|file|mimes:xlsx,csv' 
     ]);
 
-    // Debugging statement
-    Log::info('File uploaded:', ['file' => $request->file('excel_file')]);
-
     try {
         Excel::import(new EtudiantImport(), $request->file('excel_file'));
         return response()->json(['message' => 'Import successful']);
@@ -34,5 +31,6 @@ class EtudiantExportImport extends Controller
         return response()->json(['error' => 'Import failed'], 500);
     }
 }
+
 
 }

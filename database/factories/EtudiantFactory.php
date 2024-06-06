@@ -16,8 +16,6 @@ class EtudiantFactory extends Factory
             'CEF' => $this->faker->randomNumber(6),
             'Nom' => $this->faker->lastName,
             'Prenom' => $this->faker->firstName,
-            'date_absence' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'absence' => $this->faker->randomElement(['A', 'AJ', null]),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];

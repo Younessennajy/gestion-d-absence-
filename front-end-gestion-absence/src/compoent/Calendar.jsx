@@ -1,4 +1,4 @@
-// Calendar.jsx
+// Calendar.js
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
@@ -20,9 +20,7 @@ export default function Calendar({ onDateSelect }) {
         showOutsideDays
       />
       {selectedDate && (
-        <p>
-          Selected Date: {format(selectedDate, 'dd/MM/yyyy')}
-        </p>
+        <p>Selected Date: {format(selectedDate, 'dd/MM/yyyy')}</p>
       )}
     </div>
   );

@@ -17,8 +17,6 @@ return new class extends Migration
         $table->string('CEF');
         $table->string('Nom');
         $table->string('Prenom');
-        $table->date('date_absence')->nullable();
-        $table->string('absence')->nullable();
         $table->timestamps();
     });
 }

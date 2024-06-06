@@ -1,5 +1,3 @@
-
-
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EtudiantController;
@@ -12,8 +10,6 @@ Route::patch('/etudiants/{id}/updateAbsence', [EtudiantController::class, 'updat
 Route::patch('/etudiants/{id}/deleteAbsence', [EtudiantController::class, 'deleteAbsence']);
 Route::get('/etudiants/groupes', [EtudiantController::class, 'listgroupe']);
 
-
 Route::get('etudiants/export', [EtudiantExportImport::class, 'exportexcel']);
 Route::post('etudiants/import', [EtudiantExportImport::class, 'importExcel']);
-
-// Route::get('/export-data', 'ExportController@export')->name('export.data');
+?>

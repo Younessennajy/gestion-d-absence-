@@ -1,17 +1,19 @@
 <?php
-
-/*
 namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Absence extends Model
 {
-    protected $fillable = ['id_etudiant','id_absence', 'date_absence'];
+    use HasFactory;
 
-    public function absences()
+    protected $fillable = [
+        'etudiant_id', 'absence', 'date_absence',
+    ];
+
+    public function etudiant()
     {
-        return $this->hasMany(Absence::class);
+        return $this->belongsTo(Etudiant::class);
     }
-
 }
- */

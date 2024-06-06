@@ -23,17 +23,21 @@ class EtudiantExport implements FromCollection, WithMapping, WithHeadings
     * @param mixed $user
     * @return array
     */
-    public function map($Etudiant): array
+    public function map($etudiant): array
     {
+        $absences = $etudiant->absences->pluck('absence')->implode(', '); 
+        $date_absence = $etudiant->absences->pluck('date_absence')->implode(', '); 
+    
         return [
-            $Etudiant->Groupe,
-            $Etudiant->CEF,
-            $Etudiant->Nom,
-            $Etudiant->Prenom,
-            $Etudiant->absence,
-            $Etudiant->date_absence,
+            $etudiant->Groupe,
+            $etudiant->CEF,
+            $etudiant->Nom,
+            $etudiant->Prenom,
+            $absences,
+            $date_absence,
         ];
     }
+    
 
     /**
     * Define the headings for the exported file
@@ -41,14 +45,15 @@ class EtudiantExport implements FromCollection, WithMapping, WithHeadings
     * @return array
     */
     public function headings(): array
-    {
-        return [
-            'Groupe',
-            'CEF',
-            'Nom',
-            'Prenom',
-            'absence',
-            'date_absence',
-        ];
-    }
+{
+    return [
+        'Groupe',
+        'CEF',
+        'Nom',
+        'Prenom',
+        'absences', 
+        'date_absence', 
+    ];
+}
+
 }

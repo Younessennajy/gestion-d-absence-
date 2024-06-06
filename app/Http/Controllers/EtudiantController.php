@@ -1,51 +1,67 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Absence;
 use Illuminate\Http\Request;
 
 class EtudiantController extends Controller
 {
     public function index()
     {
-        $etudiants = Etudiant::all();
+        $etudiants = Etudiant::with('absences')->get();
         return response()->json($etudiants);
     }
 
     public function filterByDate($date)
     {
-        $etudiants = Etudiant::where('date_absence', $date)->get();
+        $etudiants = Etudiant::with(['absences' => function($query) use ($date) {
+            $query->where('date_absence', $date);
+        }])->get();
+    
         return response()->json($etudiants);
     }
+    
 
     public function filterByGroupe($groupe)
     {
-        $etudiants = Etudiant::where('Groupe', $groupe)->get();
+        $etudiants = Etudiant::where('Groupe', $groupe)->with('absences')->get();
         return response()->json($etudiants);
     }
+
+    public function filterByGroupeAndDate($groupe, $date)
+{
+    $etudiants = Etudiant::where('Groupe', $groupe)
+                         ->with(['absences' => function($query) use ($date) {
+                             $query->where('date_absence', $date);
+                         }])
+                         ->get();
+    return response()->json($etudiants);
+}
 
     public function updateAbsence(Request $request, $id)
     {
         $etudiant = Etudiant::findOrFail($id);
-        $etudiant->absence = $request->input('absence');
-        $etudiant->date_absence = $request->input('date_absence');
-        $etudiant->save();
+        $absence = Absence::updateOrCreate(
+            ['etudiant_id' => $etudiant->id, 'date_absence' => $request->input('date_absence')],
+            ['absence' => $request->input('absence')]
+        );
 
         return response()->json(['message' => 'Absence updated successfully']);
     }
 
-    public function deleteAbsence($id)
+    public function deleteAbsence(Request $request, $id)
     {
         $etudiant = Etudiant::findOrFail($id);
-        $etudiant->absence = null;
-        $etudiant->date_absence = null;
-        $etudiant->save();
+        $etudiant->absences()->where('date_absence', $request->input('date_absence'))->delete();
 
         return response()->json(['message' => 'Absence deleted successfully']);
     }
 
-    public function listgroupe(){
-        $groupes = Etudiant::getGroupes();
+    public function listgroupe()
+    {
+        $groupes = Etudiant::distinct()->pluck('Groupe');
         return response()->json($groupes);
     }
 }
