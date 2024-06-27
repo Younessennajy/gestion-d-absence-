@@ -28,8 +28,6 @@ class EtudiantImport implements ToCollection,ToModel
             $user->CEF=$rows[1];
             $user->Nom=$rows[2];
             $user->Prenom=$rows[3];
-            $user->absence=$rows[4];
-            $user->date_absence=$rows[5];
             $user->save();
         }
     }

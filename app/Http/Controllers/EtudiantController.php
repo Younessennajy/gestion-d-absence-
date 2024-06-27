@@ -64,4 +64,15 @@ class EtudiantController extends Controller
         $groupes = Etudiant::distinct()->pluck('Groupe');
         return response()->json($groupes);
     }
-}
+    }
+    
+    // public function deleteall(){
+    //     try {
+    //         Etudiant::truncate();
+    //         Absence::truncate();
+    
+    //         return response()->json(['message' => 'Toutes les lignes ont été supprimées avec succès'], 200);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Une erreur s\'est produite lors de la suppression des lignes'], 500);
+    //     }
+    // }

@@ -9,6 +9,7 @@ Route::get('/etudiants/filter/groupe/{groupe}', [EtudiantController::class, 'fil
 Route::patch('/etudiants/{id}/updateAbsence', [EtudiantController::class, 'updateAbsence']);
 Route::patch('/etudiants/{id}/deleteAbsence', [EtudiantController::class, 'deleteAbsence']);
 Route::get('/etudiants/groupes', [EtudiantController::class, 'listgroupe']);
+Route::get('/etudiants/deleteall', [EtudiantController::class, 'deleteall']);
 
 Route::get('etudiants/export', [EtudiantExportImport::class, 'exportexcel']);
 Route::post('etudiants/import', [EtudiantExportImport::class, 'importExcel']);

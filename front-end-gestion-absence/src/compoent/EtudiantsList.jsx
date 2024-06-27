@@ -13,7 +13,6 @@ function EtudiantsList() {
   const [selectedGroupe, setSelectedGroupe] = useState('');
 
   useEffect(() => {
-    // Fetch all students when component mounts
     if (selectedGroupe) {
       axios.get(`http://127.0.0.1:8000/api/etudiants/filter/groupe/${selectedGroupe}`)
         .then(response => {
@@ -22,17 +21,8 @@ function EtudiantsList() {
         .catch(error => {
           console.error('Error fetching filtered students:', error);
         });
-    } else {
-      axios.get('http://127.0.0.1:8000/api/etudiants')
-        .then(response => {
-          setEtudiants(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching students:', error);
-        });
-    }
+    } 
 
-    // Fetch groupes
     axios.get('http://127.0.0.1:8000/api/etudiants/groupes')
       .then(response => {
         setGroupes(response.data);
@@ -42,16 +32,13 @@ function EtudiantsList() {
       });
   }, [selectedGroupe]);
 
-  // Function to update absence
   const updateAbsence = (id, absenceValue) => {
-    // Send request to update absence
     axios.patch(`http://127.0.0.1:8000/api/etudiants/${id}/updateAbsence`, {
       absence: absenceValue,
       date_absence: selectedDate
     })
       .then(response => {
         console.log(response.data);
-        // Update state to reflect the change
         setEtudiants(prevEtudiants => {
           return prevEtudiants.map(etudiant => {
             if (etudiant.id === id) {
@@ -69,7 +56,6 @@ function EtudiantsList() {
       });
   };
 
-  // Function to export file
   const exportFile = async () => {
     try {
       const response = await axios.get('http://localhost:8000/api/etudiants/export', { responseType: 'blob' });
@@ -81,27 +67,15 @@ function EtudiantsList() {
     }
   };
 
-  // Function to handle file upload
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    const formData = new FormData();
+    const formData = new FormData();ç
     formData.append('excel_file', file);
   
     axios.post('http://localhost:8000/api/etudiants/import', formData)
       .then(response => {
         console.log('Importation réussie :', response.data);
         toast.success('Importation des données réussie !');
-        if (selectedGroupe) {
-          axios.get(`http://127.0.0.1:8000/api/etudiants/filter/groupe/${selectedGroupe}`)
-            .then(response => {
-              setEtudiants(response.data);
-            })
-            .catch(error => {
-              console.error('Error fetching filtered students:', error);
-            });
-        } else {
-          setEtudiants([]);
-        }
       })
       .catch(error => {
         console.error('Erreur lors de l\'importation des données :', error);
@@ -109,24 +83,38 @@ function EtudiantsList() {
       });
   };
 
-  // Function to handle groupe selection
   const handleGroupeSelect = (event) => {
     setSelectedGroupe(event.target.value);
   };
 
-  // Function to handle date selection
   const handleDateSelect = (date) => {
     setSelectedDate(date);
   };
 
+  // const confirmSupprimerAll = () => {
+  //   const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer toutes les lignes ?');
+  //   if (confirmDelete) {
+  //     handleSupprimerAll(); 
+  //   }
+  // };
+
+  const handleSupprimerAll = () => {
+    axios.get('http://127.0.0.1:8000/api/etudiants/deleteall')
+      .then(response => {
+        console.log(response.data.message); 
+      })
+      .catch(error => {
+        console.error('Erreur lors de la suppression de toutes les lignes :', error);
+      });
+  };
   return (
     <div className="container">
       <h1 className="text-center my-4">Liste des Étudiants</h1>
-      <div className="d-flex flex-column flex-md-row">
+      <div className="d-flex justify-between ">
         <ToastContainer />
         <div className="mr-md-4">
           <div className='btn_contenair'>
-            <div className=''>
+            <div className='d-flex'>
                 <div className="input-group custom-file-button">
                     <label className="input-group-text" htmlFor="inputGroupFile">Choose a file</label>
                     <input 
@@ -139,7 +127,7 @@ function EtudiantsList() {
                     />
                 </div>
             </div>
-            <button onClick={exportFile}>Export</button>
+            <button onClick={exportFile} className='btn btn-success'>Export</button>
           </div>
 
           <div className="mb-3">
@@ -162,7 +150,7 @@ function EtudiantsList() {
                 <option value="">Aucun groupe disponible</option>
               )}
             </select>
-
+              
           </div>
 
           <table className="table table-bordered table-hover">
@@ -228,8 +216,9 @@ function EtudiantsList() {
         </div>
 
         <div className="calendar-container">
-          <h2>Sélectionner une date</h2>
+          <h2 className='text-center '>date</h2>
           <Calendar onDateSelect={handleDateSelect} />
+          {/* <button onClick={confirmSupprimerAll} className='btn btn-danger'>supprimer All</button> */}
         </div>
       </div>
     </div>
